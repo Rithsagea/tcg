@@ -1,10 +1,16 @@
 {
   "name": "card",
-  "description": "Gets a random card",
+  "description": "Gets a card from a set",
   "options": [
     {
       "name": "set",
       "description": "The set to get a card from",
+      "type": 3,
+      "required": true
+    },
+    {
+      "name": "number",
+      "description": "The number of the card",
       "type": 3,
       "required": true
     }

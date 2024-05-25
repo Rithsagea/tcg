@@ -9,6 +9,7 @@ import discord4j.core.event.domain.interaction.ApplicationCommandInteractionEven
 import discord4j.core.event.domain.interaction.ChatInputInteractionEvent;
 import discord4j.core.object.command.ApplicationCommandInteractionOption;
 import discord4j.core.object.command.ApplicationCommandInteractionOptionValue;
+import moe.lita.tcg.discord.embeds.CardEmbed;
 import moe.lita.tcg.pokemon.Database;
 import moe.lita.tcg.pokemon.card.Card;
 import reactor.core.publisher.Mono;
@@ -23,15 +24,24 @@ public class GetCardCommand implements Command {
     public Mono<Void> execute(ApplicationCommandInteractionEvent event) {
         switch (event) {
             case ChatInputInteractionEvent c:
-                Optional<Card> card = c.getOption("set")
+                String set = c.getOption("set")
                         .flatMap(ApplicationCommandInteractionOption::getValue)
                         .map(ApplicationCommandInteractionOptionValue::asString)
-                        .map(database::getSet)
-                        .map(set -> set.get((int) (Math.random() * set.size())));
+                        .get();
+
+                String number = c.getOption("number")
+                        .flatMap(ApplicationCommandInteractionOption::getValue)
+                        .map(ApplicationCommandInteractionOptionValue::asString)
+                        .get();
+
+                Optional<Card> card = database.getSet(set).stream()
+                        .filter(a -> a.getNumber().equals(number))
+                        .findFirst();
+
                 if (!card.isPresent())
                     return c.reply("No card found!");
 
-                return c.reply(card.get().getImages().getLarge());
+                return c.reply("").withEmbeds(new CardEmbed(card.get(), set).build());
             default:
                 return Mono.empty();
         }

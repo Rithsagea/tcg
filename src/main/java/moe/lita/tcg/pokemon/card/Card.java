@@ -24,6 +24,7 @@ public class Card {
     List<String> evolvesTo;
 
     List<String> rules;
+    List<Ability> abilities;
     List<Attack> attacks;
     List<Weakness> weaknesses;
     List<Resistance> resistances;
