@@ -1,0 +1,12 @@
+{
+  "name": "card",
+  "description": "Gets a random card",
+  "options": [
+    {
+      "name": "set",
+      "description": "The set to get a card from",
+      "type": 3,
+      "required": true
+    }
+  ]
+}
