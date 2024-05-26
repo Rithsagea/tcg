@@ -10,7 +10,7 @@ import discord4j.core.event.domain.interaction.ChatInputInteractionEvent;
 import discord4j.core.object.command.ApplicationCommandInteractionOption;
 import discord4j.core.object.command.ApplicationCommandInteractionOptionValue;
 import moe.lita.tcg.discord.embeds.CardEmbed;
-import moe.lita.tcg.pokemon.Database;
+import moe.lita.tcg.pokemon.Registry;
 import moe.lita.tcg.pokemon.card.DataCard;
 import reactor.core.publisher.Mono;
 
@@ -18,7 +18,7 @@ import reactor.core.publisher.Mono;
 public class GetCardCommand implements Command {
 
     @Autowired
-    private Database database;
+    private Registry registry;
 
     @Override
     public Mono<Void> execute(ApplicationCommandInteractionEvent event) {
@@ -34,7 +34,7 @@ public class GetCardCommand implements Command {
                         .map(ApplicationCommandInteractionOptionValue::asString)
                         .get();
 
-                Optional<DataCard> card = database.getSet(set).stream()
+                Optional<DataCard> card = registry.getSet(set).stream()
                         .filter(a -> a.getNumber().equals(number))
                         .findFirst();
 

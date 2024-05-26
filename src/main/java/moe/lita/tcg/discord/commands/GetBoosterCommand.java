@@ -1,7 +1,6 @@
 package moe.lita.tcg.discord.commands;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -13,16 +12,15 @@ import discord4j.core.event.domain.interaction.ChatInputInteractionEvent;
 import discord4j.core.object.command.ApplicationCommandInteractionOption;
 import discord4j.core.object.command.ApplicationCommandInteractionOptionValue;
 import moe.lita.tcg.discord.embeds.CardEmbed;
-import moe.lita.tcg.pokemon.Database;
+import moe.lita.tcg.pokemon.Registry;
 import moe.lita.tcg.pokemon.card.DataCard;
-import moe.lita.tcg.pokemon.card.Supertype;
 import reactor.core.publisher.Mono;
 
 @Service
 public class GetBoosterCommand implements Command {
 
     @Autowired
-    private Database database;
+    private Registry registry;
 
     private List<DataCard> getBooster(List<DataCard> cards) {
         List<DataCard> draw = new ArrayList<>();
@@ -42,7 +40,7 @@ public class GetBoosterCommand implements Command {
                         .map(ApplicationCommandInteractionOptionValue::asString)
                         .get();
 
-                List<DataCard> draw = getBooster(database.getSet(set));
+                List<DataCard> draw = getBooster(registry.getSet(set));
 
                 return c.reply()
                         .withEmbeds(draw.stream()

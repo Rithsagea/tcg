@@ -1,7 +1,5 @@
 package moe.lita.tcg.pokemon.card;
 
-import java.util.List;
-
 import lombok.Builder;
 import lombok.Value;
 import lombok.extern.jackson.Jacksonized;

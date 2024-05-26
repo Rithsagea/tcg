@@ -19,7 +19,7 @@ import moe.lita.tcg.pokemon.card.DataCard;
 
 @Component
 @Log4j2
-public class Database {
+public class Registry {
 
     private ObjectMapper objectMapper = new ObjectMapper();
     private Map<String, DataCard> cards = new HashMap<>();
