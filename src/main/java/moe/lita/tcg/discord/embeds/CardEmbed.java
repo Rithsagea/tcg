@@ -7,7 +7,7 @@ import discord4j.core.spec.EmbedCreateFields.Field;
 import discord4j.core.spec.EmbedCreateSpec;
 import moe.lita.tcg.pokemon.card.Ability;
 import moe.lita.tcg.pokemon.card.Attack;
-import moe.lita.tcg.pokemon.card.Card;
+import moe.lita.tcg.pokemon.card.DataCard;
 import moe.lita.tcg.pokemon.card.Resistance;
 import moe.lita.tcg.pokemon.card.Subtype;
 import moe.lita.tcg.pokemon.card.Supertype;
@@ -24,7 +24,7 @@ public class CardEmbed {
         if (!a.getDamage().isBlank())
             title.append(String.format(" (%s)", a.getDamage()));
 
-        String text = String.format("*%s*", a.getText());
+        String text = a.getText().isBlank() ? "" : String.format("*%s*", Type.format(a.getText()));
 
         return Field.of(title.toString(), text, true);
     }
@@ -34,12 +34,12 @@ public class CardEmbed {
         title.append(String.format("[%s]", a.getType()));
         title.append(String.format(" %s", a.getName()));
 
-        String text = String.format("*%s*", Type.format(a.getText()));
+        String text = a.getText().isBlank() ? "" : String.format("*%s*", Type.format(a.getText()));
 
         return Field.of(title.toString(), text, true);
     }
 
-    public CardEmbed(Card card, String set) {
+    public CardEmbed(DataCard card) {
         List<Field> fields = new ArrayList<>();
 
         if (card.getRules() != null)
@@ -50,7 +50,7 @@ public class CardEmbed {
             card.getAttacks().stream().map(CardEmbed::attackField).forEach(fields::add);
 
         StringBuilder stats = new StringBuilder();
-        stats.append(String.format("%s %s %s\n", set, card.getNumber(), card.getRarity().getName()));
+        stats.append(String.format("%s %s %s\n", card.getSet(), card.getNumber(), card.getRarity().getName()));
 
         if (card.getSupertype() == Supertype.POKEMON) {
             stats.append(String.format("HP: %d\n", card.getHp()));

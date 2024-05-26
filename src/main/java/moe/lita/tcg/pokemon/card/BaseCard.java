@@ -4,15 +4,17 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import lombok.Builder;
 import lombok.Value;
+import lombok.experimental.NonFinal;
+import lombok.experimental.SuperBuilder;
 import lombok.extern.jackson.Jacksonized;
 
 @Value
-@Builder
+@NonFinal
+@SuperBuilder(toBuilder = true)
 @Jacksonized
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Card {
+public class BaseCard {
     String id;
     String name;
     Supertype supertype;
@@ -38,4 +40,12 @@ public class Card {
     Legality legalities;
 
     Images images;
+
+    public abstract static class BaseCardBuilder<C extends BaseCard, B extends BaseCard.BaseCardBuilder<C, B>> {
+        protected B $fillValuesFromParent(BaseCard instance) {
+            $fillValuesFromInstanceIntoBuilder(instance, this);
+            return self();
+        }
+    }
+
 }

@@ -1,0 +1,12 @@
+{
+  "name": "booster",
+  "description": "Gets a booster from a set",
+  "options": [
+    {
+      "name": "set",
+      "description": "The set to get a booster from",
+      "type": 3,
+      "required": true
+    }
+  ]
+}
