@@ -5,6 +5,8 @@ import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.annotation.JsonValue;
 
+import discord4j.common.util.Snowflake;
+import discord4j.core.object.reaction.ReactionEmoji;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -27,6 +29,11 @@ public enum Type {
 
     @Getter
     private final String emote;
+
+    public ReactionEmoji getEmoji() {
+        String[] data = emote.split("[<>:]+");
+        return ReactionEmoji.custom(Snowflake.of(data[2]), data[1], false);
+    }
 
     // TODO leetcode problem, allow certain strings to be excluded
     public static String format(String s) {

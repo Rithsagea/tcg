@@ -29,6 +29,7 @@ dependencies {
 	implementation("com.discord4j:discord4j-core:3.2.6")
 	implementation("org.xerial:sqlite-jdbc:3.45.3.0")
 	implementation("org.hibernate.orm:hibernate-community-dialects:6.5.2.Final")
+	implementation("com.google.guava:guava:33.2.0-jre")
 }
 
 tasks.withType<Test> {

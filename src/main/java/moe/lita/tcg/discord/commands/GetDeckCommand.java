@@ -1,8 +1,7 @@
 package moe.lita.tcg.discord.commands;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,41 +9,41 @@ import org.springframework.stereotype.Service;
 import discord4j.core.event.domain.interaction.ChatInputInteractionEvent;
 import discord4j.core.object.command.ApplicationCommandInteractionOption;
 import discord4j.core.object.command.ApplicationCommandInteractionOptionValue;
-import discord4j.core.spec.EmbedCreateSpec;
-import moe.lita.tcg.discord.embeds.CardEmbedBuilder;
+import moe.lita.tcg.discord.menus.DeckMenu;
+import moe.lita.tcg.discord.menus.MenuManager;
 import moe.lita.tcg.pokemon.Registry;
 import moe.lita.tcg.pokemon.card.DataCard;
+import moe.lita.tcg.pokemon.deck.Deck;
 import reactor.core.publisher.Mono;
 
 @Service
-public class GetBoosterCommand implements Command {
+public class GetDeckCommand implements Command {
 
     @Autowired
     private Registry registry;
 
-    private List<DataCard> getBooster(List<DataCard> cards) {
-        List<DataCard> draw = new ArrayList<>();
-        Random rand = new Random();
-        for (int i = 0; i < 10; i++)
-            draw.add(cards.get(rand.nextInt(cards.size())));
-
-        return draw;
-    }
+    @Autowired
+    private MenuManager menuManager;
 
     @Override
     public Mono<Void> execute(ChatInputInteractionEvent event) {
-        String set = event.getOption("set")
+        String id = event.getOption("id")
                 .flatMap(ApplicationCommandInteractionOption::getValue)
                 .map(ApplicationCommandInteractionOptionValue::asString)
                 .get();
 
-        List<DataCard> draw = getBooster(registry.getSet(set));
+        Deck deck = registry.getDeck(id);
+        List<DataCard> cards = deck.getCards().stream()
+                .flatMap(card -> Collections.nCopies(card.getCount(), registry.getCard(card.getId())).stream())
+                .toList();
 
-        return event.reply()
-                .withEmbeds(draw.stream()
-                        .map(CardEmbedBuilder::of)
-                        .map(EmbedCreateSpec.Builder::build)
-                        .toList());
+        DeckMenu menu = DeckMenu.builder()
+                .deck(deck)
+                .cards(cards)
+                .index(0)
+                .build();
+
+        return menuManager.createMenu(menu, event);
     }
 
 }

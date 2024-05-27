@@ -8,7 +8,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum Rarity {
     COMMON("Common"), UNCOMMON("Uncommon"), RARE_HOLO("Rare Holo"), RARE_HOLO_EX("Rare Holo EX"), RARE("Rare"),
-    RARE_ULTRA("Rare Ultra"), RARE_SECRET("Rare Secret"), PROMO("Promo"), RARE_ACE("Rare ACE");
+    RARE_ULTRA("Rare Ultra"), RARE_SECRET("Rare Secret"), PROMO("Promo"), RARE_ACE("Rare ACE"),
+    RARE_PRIME("Rare Prime"), LEGEND("LEGEND");
 
     @Getter
     @JsonValue

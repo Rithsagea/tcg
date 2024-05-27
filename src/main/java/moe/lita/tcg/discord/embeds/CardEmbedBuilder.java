@@ -14,9 +14,7 @@ import moe.lita.tcg.pokemon.card.Supertype;
 import moe.lita.tcg.pokemon.card.Type;
 import moe.lita.tcg.pokemon.card.Weakness;
 
-public class CardEmbed {
-    EmbedCreateSpec.Builder builder = EmbedCreateSpec.builder();
-
+public class CardEmbedBuilder {
     private static Field attackField(Attack a) {
         StringBuilder title = new StringBuilder();
         title.append(Type.toString(a.getCost()));
@@ -39,15 +37,15 @@ public class CardEmbed {
         return Field.of(title.toString(), text, true);
     }
 
-    public CardEmbed(DataCard card) {
+    public static EmbedCreateSpec.Builder of(DataCard card) {
         List<Field> fields = new ArrayList<>();
 
         if (card.getRules() != null)
             card.getRules().stream().map(s -> Field.of("Rule", s, true)).forEach(fields::add);
         if (card.getAbilities() != null)
-            card.getAbilities().stream().map(CardEmbed::abilityField).forEach(fields::add);
+            card.getAbilities().stream().map(CardEmbedBuilder::abilityField).forEach(fields::add);
         if (card.getAttacks() != null)
-            card.getAttacks().stream().map(CardEmbed::attackField).forEach(fields::add);
+            card.getAttacks().stream().map(CardEmbedBuilder::attackField).forEach(fields::add);
 
         StringBuilder stats = new StringBuilder();
         stats.append(String.format("%s %s %s\n", card.getSet(), card.getNumber(), card.getRarity().getName()));
@@ -67,14 +65,11 @@ public class CardEmbed {
         }
         fields.add(Field.of("Stats", stats.toString(), false));
 
-        builder.title(String.format("%s %s", card.getName(), Type.toString(card.getTypes())))
+        return EmbedCreateSpec.builder()
+                .title(String.format("%s %s", card.getName(), Type.toString(card.getTypes())))
                 .image(card.getImages().getLarge())
                 .description(card.getSupertype().getName() + " "
                         + card.getSubtypes().stream().map(Subtype::getName).toList())
                 .addAllFields(fields);
-    }
-
-    public EmbedCreateSpec build() {
-        return builder.build();
     }
 }

@@ -8,13 +8,13 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import discord4j.core.event.domain.interaction.ApplicationCommandInteractionEvent;
+import discord4j.core.event.domain.interaction.ChatInputInteractionEvent;
 import jakarta.annotation.PostConstruct;
 import moe.lita.tcg.discord.commands.Command;
 import reactor.core.publisher.Mono;
 
 @Service
-public class ApplicationCommandInteractionListener implements EventListener<ApplicationCommandInteractionEvent> {
+public class ChatInputInteractionListener implements EventListener<ChatInputInteractionEvent> {
 
     @Autowired
     private List<Command> commands;
@@ -27,18 +27,19 @@ public class ApplicationCommandInteractionListener implements EventListener<Appl
     }
 
     @Override
-    public Class<ApplicationCommandInteractionEvent> getEventType() {
-        return ApplicationCommandInteractionEvent.class;
+    public Class<ChatInputInteractionEvent> getEventType() {
+        return ChatInputInteractionEvent.class;
     }
 
     @Override
-    public Mono<Void> execute(ApplicationCommandInteractionEvent event) {
+    public Mono<Void> execute(ChatInputInteractionEvent event) {
         log.info("Received command {}", event.getCommandName());
 
+        Command command = commandMap.get(event.getCommandName());
+
         return Mono.just(event)
-                .flatMap(cmd -> commandMap.get(event.getCommandName()).execute(event))
-                .doOnError(e -> log.error("Error executing command", e))
-                .onErrorResume(e -> event.reply("Error executing command").withEphemeral(true));
+                .flatMap(command::execute)
+                .onErrorResume(command::handleError);
     }
 
 }

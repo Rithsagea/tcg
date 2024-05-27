@@ -13,6 +13,10 @@ import lombok.experimental.SuperBuilder;
 public class DataCard extends BaseCard {
     String set;
 
+    public String toLine() {
+        return String.format("%s [%s]", getName(), getId());
+    }
+
     public static DataCardBuilder<?, ?> toBuilder(BaseCard p) {
         return new DataCardBuilderImpl().$fillValuesFromParent(p);
     }
