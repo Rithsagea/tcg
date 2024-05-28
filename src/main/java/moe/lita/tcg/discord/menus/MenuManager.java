@@ -1,9 +1,11 @@
 package moe.lita.tcg.discord.menus;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import org.springframework.stereotype.Service;
+
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 
 import discord4j.common.util.Snowflake;
 import discord4j.core.event.domain.interaction.ChatInputInteractionEvent;
@@ -14,20 +16,22 @@ import reactor.core.publisher.Mono;
 @Service
 @Log4j2
 public class MenuManager {
-    private Map<Snowflake, Menu> menuMap = new HashMap<>();
+    private Cache<Snowflake, Menu> cache = CacheBuilder.newBuilder()
+            .expireAfterAccess(10, TimeUnit.MINUTES)
+            .build();
 
     public Mono<Void> createMenu(Menu menu, ChatInputInteractionEvent event) {
         return event.reply("Loading...")
                 .then(menu.update(event))
                 .doOnNext(msg -> {
                     log.info("Created Menu: " + msg.getId());
-                    menuMap.put(msg.getId(), menu);
+                    cache.put(msg.getId(), menu);
                 })
                 .then();
     }
 
     public Mono<Void> handle(ComponentInteractionEvent event) {
-        Menu menu = menuMap.get(event.getMessageId());
+        Menu menu = cache.getIfPresent(event.getMessageId());
         if (menu == null)
             return event.reply("This menu has expired!").withEphemeral(true);
 
