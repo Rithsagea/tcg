@@ -4,7 +4,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import discord4j.core.event.domain.interaction.ChatInputInteractionEvent;
 import discord4j.core.object.command.ApplicationCommandInteractionOption;
@@ -16,7 +16,7 @@ import moe.lita.tcg.pokemon.card.DataCard;
 import moe.lita.tcg.pokemon.deck.Deck;
 import reactor.core.publisher.Mono;
 
-@Service
+@Component
 public class GetDeckCommand implements Command {
 
     @Autowired

@@ -6,14 +6,14 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import discord4j.core.event.domain.interaction.ChatInputInteractionEvent;
 import jakarta.annotation.PostConstruct;
 import moe.lita.tcg.discord.commands.Command;
 import reactor.core.publisher.Mono;
 
-@Service
+@Component
 public class ChatInputInteractionListener implements EventListener<ChatInputInteractionEvent> {
 
     @Autowired

@@ -3,7 +3,7 @@ package moe.lita.tcg.discord.commands;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import discord4j.core.event.domain.interaction.ChatInputInteractionEvent;
 import discord4j.core.object.command.ApplicationCommandInteractionOption;
@@ -13,7 +13,7 @@ import moe.lita.tcg.pokemon.Registry;
 import moe.lita.tcg.pokemon.card.DataCard;
 import reactor.core.publisher.Mono;
 
-@Service
+@Component
 public class GetCardCommand implements Command {
 
     @Autowired

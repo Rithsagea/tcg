@@ -1,11 +1,11 @@
 package moe.lita.tcg.discord.listener;
 
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import discord4j.core.event.domain.message.MessageCreateEvent;
 import reactor.core.publisher.Mono;
 
-@Service
+@Component
 public class MessageCreateListener implements EventListener<MessageCreateEvent> {
 
     @Override

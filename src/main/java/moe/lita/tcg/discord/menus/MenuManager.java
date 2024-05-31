@@ -2,7 +2,7 @@ package moe.lita.tcg.discord.menus;
 
 import java.util.concurrent.TimeUnit;
 
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
@@ -13,7 +13,7 @@ import discord4j.core.event.domain.interaction.ComponentInteractionEvent;
 import lombok.extern.log4j.Log4j2;
 import reactor.core.publisher.Mono;
 
-@Service
+@Component
 @Log4j2
 public class MenuManager {
     private Cache<Snowflake, Menu> cache = CacheBuilder.newBuilder()

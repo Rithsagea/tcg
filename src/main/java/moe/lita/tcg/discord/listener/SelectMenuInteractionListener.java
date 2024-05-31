@@ -1,13 +1,13 @@
 package moe.lita.tcg.discord.listener;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import discord4j.core.event.domain.interaction.SelectMenuInteractionEvent;
 import moe.lita.tcg.discord.menus.MenuManager;
 import reactor.core.publisher.Mono;
 
-@Service
+@Component
 public class SelectMenuInteractionListener implements EventListener<SelectMenuInteractionEvent> {
 
     @Autowired
