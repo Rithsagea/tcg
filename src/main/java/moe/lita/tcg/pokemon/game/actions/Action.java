@@ -1,4 +1,7 @@
-package moe.lita.tcg.pokemon.game;
+package moe.lita.tcg.pokemon.game.actions;
+
+import moe.lita.tcg.pokemon.game.ActivePlayer;
+import moe.lita.tcg.pokemon.game.Game;
 
 public interface Action {
     /*
@@ -8,10 +11,10 @@ public interface Action {
     public boolean isComplete();
 
     /*
-     * Performs this action from the perspective of the active player.
+     * Performs this action on the given game
      * Should only be called if `isComplete()` return true.
      */
-    public void apply(Game game, ActivePlayer player);
+    public void apply(Game game);
 
     /*
      * Returns the player that can initiate this action
