@@ -1,14 +1,16 @@
 package moe.lita.tcg.pokemon.game;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import lombok.Builder;
-import lombok.Data;
+import lombok.Builder.Default;
 import moe.lita.tcg.pokemon.card.DataCard;
 
 @Builder
-@Data
 public class Player {
-    List<DataCard> deck;
-    List<DataCard> hand;
+    public List<DataCard> deck;
+
+    @Default
+    public List<DataCard> hand = new ArrayList<>();
 }

@@ -13,12 +13,13 @@ tcg.sqlite
 .classpath
 .factorypath
 .project
-.settings
+.settings/**
 .springBeans
 .sts4-cache
 bin/
 !**/src/main/**/bin/
 !**/src/test/**/bin/
+!.settings/org.eclipse.jdt.core.prefs
 
 ### IntelliJ IDEA ###
 .idea

@@ -1,20 +1,25 @@
 package moe.lita.tcg.pokemon.game.states;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
-import lombok.experimental.SuperBuilder;
+import lombok.RequiredArgsConstructor;
 import moe.lita.tcg.pokemon.game.Game;
 import moe.lita.tcg.pokemon.game.actions.Action;
 
-@SuperBuilder
+@RequiredArgsConstructor
 public abstract class State {
 
-    final Game game;
+    public final Game game;
+    protected final List<Action> actions = new ArrayList<>();
 
     /*
      * Gets a list of available actions
      */
-    public abstract List<Action> getActions();
+    public final List<Action> getActions() {
+        return Collections.unmodifiableList(actions);
+    }
 
     /*
      * Returns the next state after an action has been executed

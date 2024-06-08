@@ -2,22 +2,61 @@ package moe.lita.tcg.pokemon.game.states;
 
 import java.util.List;
 
-import lombok.experimental.SuperBuilder;
+import lombok.RequiredArgsConstructor;
+import moe.lita.tcg.pokemon.game.ActivePlayer;
+import moe.lita.tcg.pokemon.game.Game;
+import moe.lita.tcg.pokemon.game.Player;
 import moe.lita.tcg.pokemon.game.actions.Action;
 
-@SuperBuilder
 public class InitialDrawState extends State {
 
-    @Override
-    public List<Action> getActions() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getActions'");
+    public InitialDrawState(Game game) {
+        super(game);
+        this.actions.add(new DrawAction(ActivePlayer.PLAYER1));
+        this.actions.add(new DrawAction(ActivePlayer.PLAYER2));
     }
 
     @Override
     public State advance() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'advance'");
+        if (player1Drawn && player2Drawn)
+            return null;
+        return this;
     }
 
+    boolean player1Drawn = false;
+    boolean player2Drawn = false;
+
+    @RequiredArgsConstructor
+    public class DrawAction extends Action {
+        public final ActivePlayer player;
+
+        @Override
+        public boolean isEnabled() {
+            return switch (player) {
+                case ActivePlayer.PLAYER1 -> !player1Drawn;
+                case ActivePlayer.PLAYER2 -> !player2Drawn;
+                default -> false;
+            };
+        }
+
+        @Override
+        public boolean isComplete() {
+            return true;
+        }
+
+        @Override
+        public List<ActivePlayer> getUsers() {
+            return List.of(player);
+        }
+
+        @Override
+        public void apply(Game game) {
+            Player player = game.getPlayer(this.player);
+            for (int i = 0; i < 7; i++) {
+                player.hand.add(player.deck.removeLast());
+            }
+        }
+    }
+
+    // TODO MulliganAction
 }
