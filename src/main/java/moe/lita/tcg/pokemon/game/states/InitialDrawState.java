@@ -2,7 +2,6 @@ package moe.lita.tcg.pokemon.game.states;
 
 import java.util.List;
 
-import lombok.RequiredArgsConstructor;
 import moe.lita.tcg.pokemon.game.ActivePlayer;
 import moe.lita.tcg.pokemon.game.Game;
 import moe.lita.tcg.pokemon.game.Player;
@@ -19,16 +18,19 @@ public class InitialDrawState extends State {
     @Override
     public State advance() {
         if (player1Drawn && player2Drawn)
-            return null;
+            return new InitialPlacePokemonState(game);
         return this;
     }
 
     boolean player1Drawn = false;
     boolean player2Drawn = false;
 
-    @RequiredArgsConstructor
     public class DrawAction extends Action {
         public final ActivePlayer player;
+
+        public DrawAction(ActivePlayer player) {
+            this.player = player;
+        }
 
         @Override
         public boolean isEnabled() {
